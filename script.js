@@ -11,20 +11,42 @@ function getComputerChoice(){
 
 function playRound(playerChoice, computerChoice){
     playerChoice = playerChoice.charAt(0).toUpperCase() + playerChoice.slice(1);
-    if (playerChoice == computerChoice)
-        return ("It's a tie.");
-    else if (playerChoice == "Rock" && computerChoice == "Paper")
+    if (playerChoice == "Rock" && computerChoice == "Paper")
+    {
+        resultComputer++;
         return("You lose! Rock beats Paper.");
+    }
     else if (playerChoice == "Paper" && computerChoice == "Rock")
+    {
+        resultPlayer++;
         return("You win! Paper beats Rock.");
+    }
     else if (playerChoice == "Rock" && computerChoice == "Scissors")
+    {
+        resultPlayer++;
         return("You win! Rock beats Scissors.");
+    }
     else if (playerChoice == "Paper" && computerChoice == "Scissors")
+    {
+        resultComputer++;
         return("You lose! Scissors beat Paper.");
+    }
     else if (playerChoice == "Scissors" && computerChoice == "Paper")
+    {
+        resultPlayer++;    
         return("You win! Scissors beat Paper.");
+    }
     else if (playerChoice == "Scissors" && computerChoice == "Rock")
+    {
+        resultComputer++;
         return("You lose! Rock beats Scissors.");
+    }
+    else if(playerChoice == "Rock" && computerChoice== "Rock")
+        return ("It's a tie.");
+    else if (playerChoice == "Paper" && computerChoice == "Paper")
+        return("It's a tie.");
+    else if (playerChoice == "Scissors" && computerChoice == "Scissors")
+        return("It's a tie.");
 }
 
 function checkScore(result){
@@ -40,29 +62,28 @@ function checkScore(result){
     }
 }
 
-
-
-function game(){
-    let playerScore=0;
-    let computerScore=0;
-    for(let i=0;i<5;i++)
-    {
-        let computerChoice = getComputerChoice()
-        let playerChoice = prompt("Please enter your sign.")
-        console.log(playRound(playerChoice,computerChoice));
-        if(checkScore(playRound(playerChoice,computerChoice)) == 1)
-            playerScore++;
-        else if(checkScore(playRound(playerChoice,computerChoice)) == 2)
-            computerScore++;
-    }   
-    if(playerScore == computerScore)
-            alert(`It's a draw! Result is Player:Computer = ${playerScore} : ${computerScore}.`);
-    else if(playerScore > computerScore)
-            alert(`You have won the game! Result is Player:Computer = ${playerScore} : ${computerScore}.`);
-    else if(playerScore < computerScore)
-            alert(`You have lost the game! Result is Player:Computer = ${playerScore} : ${computerScore}.`);
-
-}
-
-
-game();
+const buttons = document.querySelectorAll(".choicebtn");
+const result = document.querySelector("#result");
+result.style.cssText= "white-space: pre-line";
+let resultPlayer = 0;
+let resultComputer = 0;
+buttons.forEach((button) => {
+    button.addEventListener("click",function() { 
+        result.textContent+=playRound(button.textContent,getComputerChoice())
+                          + "  Current result is: " + resultPlayer +" : " +  resultComputer + "\r\n";
+        if(resultPlayer == 5)
+        {
+            result.textContent+="\r\n" + "Congrats, you won the game! Final score is: Player: "
+            + resultPlayer + " : " +resultComputer + " Computer." + "\r\n" + "The score will be resetted." + "\r\n\r\n";
+            resultPlayer = 0;
+            resultComputer = 0;
+        }
+        else if(resultComputer == 5)
+        {
+        result.textContent+="\r\n" + "Unfortunately, you lost the game! Final score is: Player: "
+        + resultPlayer + " : " +resultComputer + " Computer." + "\r\n" + "The score will be resetted." + "\r\n\r\n";
+        resultPlayer = 0;
+        resultComputer = 0;
+        }
+    });
+});
